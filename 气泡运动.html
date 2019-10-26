@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>气泡运动</title>
+    <style>
+        html,body{
+            height: 100%;
+            background-color: #eeeeee;
+        }
+        *{
+            padding: 0px;
+            margin: 0px;
+        }
+        #myVas{
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            right: 0px;
+            bottom: 0px;
+            margin: auto;
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+<canvas id="myVas" height="400" width="200"></canvas>
+<script>
+    window.onload = function () {
+        var myVas = document.getElementById('myVas');
+        var vas = myVas.getContext('2d');
+        var arr = [];
+
+        setInterval(function () {
+            vas.clearRect(0, 0, myVas.width, myVas.height);
+
+            for(var j=0; j<arr.length; j++){
+                arr[j].deg+=3;
+                if(arr[j].y<=20){
+                    arr.splice(j, 1)
+                }
+                arr[j].x = arr[j].startX + Math.sin(arr[j].deg*Math.PI/180)*arr[j].scale;
+                arr[j].y = arr[j].startY - arr[j].deg*Math.PI/180*arr[j].scale*0.65;
+            }
+
+
+            for (var i=0; i<arr.length; i++){
+                vas.beginPath();
+                vas.fillStyle = 'rgba('+arr[i].red+','+arr[i].green+','+arr[i].blue+','+arr[i].a+')';
+                vas.arc(arr[i].x, arr[i].y, arr[i].r, 0, 360);
+                vas.fill();
+            }
+
+        }, 16);
+
+
+        setInterval(function () {
+            var x = Math.floor(Math.random()*myVas.width);
+            var y = myVas.height+30;
+            var r = Math.floor(Math.random()*(25-10))+10;
+
+            var red = Math.floor(Math.random()*255);
+            var green = Math.floor(Math.random()*255);
+            var blue = Math.floor(Math.random()*255);
+            var a = 1;
+
+            var startX = x;
+            var startY = y;
+            var deg = 0;
+            var scale = Math.floor(Math.random()*(60-30))+30;
+            var obj = {
+                x: x,
+                y: y,
+                r: r,
+                red: red,
+                green: green,
+                blue: blue,
+                a: a,
+                startX: startX,
+                startY: startY,
+                deg: deg,
+                scale: scale
+            };
+            arr.push(obj);
+        }, 150)
+
+    }
+</script>
+</body>
+</html>
